@@ -1,0 +1,75 @@
+import { useEffect, useState } from "react";
+import Chart from "react-apexcharts";
+import { fetchStockData } from "../services/stockService";
+import './stockChart.css';
+
+const StockChart = ({ symbol }) => {
+  const [series, setSeries] = useState([{ data: [] }]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const getStockData = async () => {
+      setLoading(true);
+      try {
+        const stockData = await fetchStockData(symbol);
+        console.log("Fetched Stock Data:", stockData);
+
+        // Format data for ApexCharts
+        const formattedData = stockData.map((stock) => ({
+          x: new Date(stock.date),
+          y: [stock.open, stock.high, stock.low, stock.close],
+        }));
+
+        setSeries([{ data: formattedData }]);
+      } catch (error) {
+        console.error("Error fetching stock data:", error);
+      }
+      setLoading(false);
+    };
+
+    getStockData();
+  }, [symbol]);
+
+  const chartOptions = {
+    chart: {
+      type: "candlestick",
+      height: "600px", // ✅ Bigger height
+      width: "100%", // ✅ Full width
+      background: "#222", // Dark background
+    },
+    title: {
+      text: `${symbol} Candlestick Chart`,
+      align: "left",
+      style: { color: "#fff" },
+    },
+    xaxis: {
+      type: "datetime",
+      labels: { style: { colors: "#fff" } },
+    },
+    yaxis: {
+      tooltip: { enabled: true },
+      labels: { style: { colors: "#fff" } },
+    },
+    grid: {
+      borderColor: "#444",
+    },
+  };
+
+  return (
+    <div className="stock-chart-container">
+      {loading ? (
+        <p className="loading">Loading...</p>
+      ) : (
+        <Chart
+          options={chartOptions}
+          series={series}
+          type="candlestick"
+          width="100%" // ✅ Full-screen width
+          height="400px" // ✅ Increased height for bigger view
+        />
+      )}
+    </div>
+  );
+};
+
+export default StockChart;
