@@ -4,24 +4,37 @@ import { fetchStockData } from "../services/stockService";
 import './stockChart.css';
 
 const StockChart = ({ symbol }) => {
-  const [series, setSeries] = useState([{ data: [] }]);
+  const [candlestickSeries, setCandlestickSeries] = useState([]);
+  const [volumeSeries, setVolumeSeries] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [timeframe, setTimeframe] = useState("daily"); // Default: Daily Chart
 
   useEffect(() => {
     const getStockData = async () => {
       setLoading(true);
       try {
-        const stockData = await fetchStockData(symbol, timeframe);
-        console.log(`Fetched ${timeframe} Stock Data:`, stockData);
+        const stockData = await fetchStockData(symbol);
+        console.log(`Fetched Stock Data for ${symbol}:`, stockData);
 
-        // Format data for ApexCharts
-        const formattedData = stockData.map((stock) => ({
-          x: new Date(stock.date),
-          y: [stock.open, stock.high, stock.low, stock.close],
-        }));
+        if (stockData.length > 0) {
+          // ✅ Format Candlestick Data
+          const formattedCandlestickData = stockData.map((stock) => ({
+            x: new Date(stock.timestamp),
+            y: [stock.openPrice, stock.highPrice, stock.lowPrice, stock.closePrice],
+          }));
 
-        setSeries([{ data: formattedData }]);
+          // ✅ Format Volume Data
+          const formattedVolumeData = stockData.map((stock) => ({
+            x: new Date(stock.timestamp),
+            y: stock.volume,
+            color: stock.closePrice >= stock.openPrice ? "#00E396" : "#FF4560", // Green for up, red for down
+          }));
+
+          setCandlestickSeries([{ name: "Candlestick", type: "candlestick", data: formattedCandlestickData }]);
+          setVolumeSeries([{ name: "Volume", type: "bar", data: formattedVolumeData }]);
+        } else {
+          setCandlestickSeries([]);
+          setVolumeSeries([]);
+        }
       } catch (error) {
         console.error("Error fetching stock data:", error);
       }
@@ -29,62 +42,65 @@ const StockChart = ({ symbol }) => {
     };
 
     getStockData();
-  }, [symbol, timeframe]);
+  }, [symbol]);
 
-  const chartOptions = {
-    chart: {
-      type: "candlestick",
-      height: "600px",
-      width: "100%",
-      background: "#222",
-    },
-    title: {
-      text: `${symbol} Candlestick Chart (${timeframe.toUpperCase()})`,
-      align: "left",
-      style: { color: "#fff" },
-    },
-    xaxis: {
-      type: "datetime",
-      labels: { style: { colors: "#fff" } },
-    },
+  // ✅ Shared x-axis settings for perfect alignment
+  const sharedXaxis = {
+    type: "datetime",
+    labels: { style: { colors: "#fff" } },
+    tickPlacement: "on",
+    axisBorder: { show: true, color: "#444" }, // ✅ Ensures both x-axes have the same border
+    axisTicks: { show: true, color: "#444" }, // ✅ Makes sure ticks are aligned
+  };
+
+  // ✅ Candlestick Chart Options
+  const candlestickOptions = {
+    chart: { type: "candlestick", height: "400px", background: "#222" },
+    title: { text: `${symbol} Candlestick Chart`, align: "left", style: { color: "#fff" } },
+    xaxis: sharedXaxis, // ✅ Shared x-axis
     yaxis: {
-      tooltip: { enabled: true },
       labels: { style: { colors: "#fff" } },
+      tooltip: { enabled: true },
     },
-    grid: {
-      borderColor: "#444",
+    grid: { borderColor: "#444" },
+  };
+
+  // ✅ Volume Chart Options (Aligned with Candlestick)
+  const volumeOptions = {
+    chart: { type: "bar", height: "150px", background: "#222" },
+    xaxis: sharedXaxis, // ✅ Shared x-axis for perfect alignment
+    yaxis: {
+      labels: { style: { colors: "#fff" }, formatter: (value) => `${Math.round(value / 1000)}K` }, // ✅ Show volume in 'K'
+      opposite: false, // ✅ Place Y-axis numbers on the left
     },
+    grid: { borderColor: "#444", show: true }, // ✅ Keep light grid for better readability
+    plotOptions: { bar: { columnWidth: "50%", borderRadius: 2 } }, // ✅ Adjust bar width & style
+    dataLabels: { enabled: false }, // ✅ Hide volume labels on bars
+    stroke: { width: 0 }, // ✅ No stroke for volume bars
   };
 
   return (
     <div className="stock-chart-container">
-      <div className="timeframe-selector">
-        <label>Select Timeframe: </label>
-        <select value={timeframe} onChange={(e) => setTimeframe(e.target.value)}>
-          <option value="1h">1 Hour</option>
-          <option value="4h">4 Hours</option>
-          <option value="daily">Daily</option>
-          <option value="weekly">Weekly</option>
-          <option value="monthly">Monthly</option>
-        </select>
-      </div>
-
       {loading ? (
         <p className="loading">Loading...</p>
       ) : (
-        <Chart
-          options={chartOptions}
-          series={series}
-          type="candlestick"
-          width="100%"
-          height="400px"
-        />
+        <>
+          {/* Candlestick Chart */}
+          <Chart options={candlestickOptions} series={candlestickSeries} type="candlestick" width="100%" height="400px" />
+          
+          {/* Volume Chart (Aligned & with Left Y-axis) */}
+          <Chart options={volumeOptions} series={volumeSeries} type="bar" width="100%" height="150px" />
+        </>
       )}
     </div>
   );
 };
 
 export default StockChart;
+
+
+
+
 
 
 
