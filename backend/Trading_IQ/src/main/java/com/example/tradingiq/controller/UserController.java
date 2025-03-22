@@ -13,15 +13,25 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import com.example.tradingiq.config.CorsConfig;
 import com.example.tradingiq.model.User;
 import com.example.tradingiq.service.UserService;
 
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
+
+  private final WebMvcConfigurer corsConfigurer;
+
+  private final CorsConfig corsConfig;
   @Autowired
   private UserService userService;
+
+  UserController(CorsConfig corsConfig, WebMvcConfigurer corsConfigurer) {
+    this.corsConfig = corsConfig;
+    this.corsConfigurer = corsConfigurer;
+  }
 
   @PostMapping("/save")
   public User saveUser(@RequestBody User user) {
@@ -58,4 +68,15 @@ public class UserController {
     }
     return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found.");
   }
+
+  @PostMapping("/login")
+  public ResponseEntity<?> loginUser(@RequestBody User loginRequest) {
+    Optional<User> user = userService.getUserByEmail(loginRequest.getEmail());
+
+    if (user.isPresent() && user.get().getPassword().equals(loginRequest.getPassword())) {
+      return ResponseEntity.ok(user.get()); // Return user data on successful login
+    }
+    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email or password");
+  }
+
 }

@@ -33,39 +33,41 @@ public class StockDataService {
         this.stockRepository = stockRepository;
     }
 
-    @SuppressWarnings({ "null", "unchecked" })
     public void fetchAndSaveHistoricalStockData() {
-        String symbols = "TSLA"; 
-        String dateFrom = "2024-12-01"; 
-        String url = stockDataApiUrl + "/eod?symbols=" + symbols + "&api_token=" + stockDataApiKey + "&date_from="
-                + dateFrom;
+        String dateFrom = "2024-12-01";
+        String symbol1 = "TSLA";
+        fetchAndSaveSingleSymbol(symbol1, dateFrom);
+        String symbol2 = "NVDA";
+        fetchAndSaveSingleSymbol(symbol2, dateFrom);
+        String symbol3 = "AAPL";
+        fetchAndSaveSingleSymbol(symbol3, dateFrom);
+    }
 
+    private void fetchAndSaveSingleSymbol(String symbol, String dateFrom) {
+        String url = stockDataApiUrl + "/eod?symbols=" + symbol + "&api_token=" + stockDataApiKey + "&date_from="
+                + dateFrom;
         ResponseEntity<Map<String, Object>> response = restTemplate.exchange(
                 url, HttpMethod.GET, null, new ParameterizedTypeReference<Map<String, Object>>() {
                 });
 
         if (response.getBody() != null && response.getBody().containsKey("data")) {
             List<Map<String, Object>> stockList = (List<Map<String, Object>>) response.getBody().get("data");
-
             if (stockList != null && !stockList.isEmpty()) {
                 for (Map<String, Object> stockData : stockList) {
-                    String stockSymbol = symbols;
+                    String stockSymbol = symbol;
                     double openPrice = ((Number) stockData.get("open")).doubleValue();
                     double highPrice = ((Number) stockData.get("high")).doubleValue();
                     double lowPrice = ((Number) stockData.get("low")).doubleValue();
                     double closePrice = ((Number) stockData.get("close")).doubleValue();
                     int volume = ((Number) stockData.get("volume")).intValue();
 
-                    // ✅ Convert API timestamp correctly
-                    String apiTimestamp = (String) stockData.get("date"); // Example: "2023-09-12T00:00:00.000Z"
+                    String apiTimestamp = (String) stockData.get("date");
                     LocalDateTime timestamp = Instant.parse(apiTimestamp).atZone(ZoneId.of("UTC")).toLocalDateTime();
 
-                    // ✅ Save multiple historical data points per stock
                     Stock stock = new Stock(stockSymbol, openPrice, highPrice, lowPrice, closePrice, volume, timestamp);
                     stockRepository.save(stock);
                 }
             }
         }
     }
-
 }
