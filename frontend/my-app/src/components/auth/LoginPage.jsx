@@ -1,7 +1,8 @@
+// src/components/auth/LoginPage.jsx
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import "./loginPage.css"; 
+import "./loginPage.css";  // Basic CSS styling
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -19,20 +20,20 @@ const LoginPage = () => {
         password,
       });
 
-      // ✅ Store user info in localStorage
+      // ✅ Store full user object in localStorage
       localStorage.setItem("user", JSON.stringify(response.data));
 
       // ✅ Redirect to dashboard
       navigate("/dashboard");
     // eslint-disable-next-line no-unused-vars
-    } catch (err) {
+    } catch (error) {
       setError("Invalid email or password");
     }
   };
 
   return (
     <div className="login-container">
-      <h2>Login to TradingIQ</h2>
+      <h2>Login to Trading_IQ</h2>
       {error && <p className="error">{error}</p>}
       
       <form onSubmit={handleLogin}>
@@ -57,3 +58,7 @@ const LoginPage = () => {
 };
 
 export default LoginPage;
+
+
+
+

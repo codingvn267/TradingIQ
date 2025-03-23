@@ -1,0 +1,40 @@
+/* src/components/auth/loginPage.css */
+
+.login-container {
+  background: rgba(0, 0, 0, 0.8);
+  padding: 40px;
+  border-radius: 12px;
+  max-width: 400px;
+  margin: 10% auto;
+  color: white;
+  text-align: center;
+}
+
+.login-container input {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  margin: 12px 0;
+  border-radius: 6px;
+  border: none;
+}
+
+.login-container button {
+  padding: 12px;
+  background-color: #1a73e8;
+  color: white;
+  font-weight: bold;
+  border: none;
+  width: 100%;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.login-container button:hover {
+  background-color: #0f5bd7;
+}
+
+.error {
+  color: red;
+  margin-bottom: 10px;
+}
