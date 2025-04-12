@@ -27,7 +27,7 @@ const AnalysisPanel = () => {
         'http://localhost:8080/api/openai',
         { symbol: selectedSymbol }
       );
-      const result = JSON.parse(response.data);
+      const result = response.data;
       setAnalysis(result.choices?.[0]?.message?.content || '⚠️ No response from AI.');
     } catch (error) {
       console.error('Error:', error);
@@ -46,7 +46,6 @@ const AnalysisPanel = () => {
 
   return (
     <div className="panel-box">
-      <h2>📊 Technical Analysis</h2>
 
       <div style={{ marginBottom: '1rem' }}>
         <label>
