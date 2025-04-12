@@ -24,7 +24,6 @@ const AnalysisPanel = () => {
 
   return (
     <div>
-      <h3>📊 Stock Analysis</h3>
       <select value={symbol} onChange={(e) => setSymbol(e.target.value)}>
         <option value="TSLA">Tesla</option>
         <option value="NVDA">NVIDIA</option>

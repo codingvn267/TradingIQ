@@ -3,7 +3,6 @@ import React from 'react';
 const NewsPage = () => {
   return (
     <div className="news-container">
-      <h2>📈 Financial News</h2>
       <ul>
         <li><a href="https://www.marketwatch.com" target="_blank" rel="noreferrer">MarketWatch</a></li>
         <li><a href="https://www.reuters.com/finance" target="_blank" rel="noreferrer">Reuters Finance</a></li>
