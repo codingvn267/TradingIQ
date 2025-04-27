@@ -27,25 +27,27 @@ public class StockController {
     this.strategyService = strategyService;
   }
 
-  // ✅ Fetch & store multiple stocks (TSLA, AAPL, NVDA) - batch process
+  //Fetch & store multiple stocks (TSLA, AAPL, NVDA) - batch process
   @GetMapping("/fetch-historical")
   public String fetchAndSaveHistoricalStockData() {
     stockDataService.fetchAndSaveHistoricalStockData();
     return "Historical stock data fetched and saved!";
   }
 
-  // ✅ Retrieve all stored stock data for a specific symbol
+  //Retrieve all stored stock data for a specific symbol
   @GetMapping("/history")
   public List<Stock> getStockHistory(@RequestParam String symbol) {
     return stockRepository.findBySymbolOrderByTimestampAsc(symbol);
   }
 
-  // ✅ Retrieve the most recent stock data for a symbol
+  //Retrieve the most recent stock data for a symbol
   @GetMapping("/latest")
   public Stock getLatestStockData(@RequestParam String symbol) {
     return stockRepository.findLatestStockData(symbol);
   }
 
+  //Analyze stock data using a specific strategy
+  // This endpoint will call the strategy service to analyze the stock data
   @GetMapping("/analyze")
   public ResponseEntity<String> analyzeStock(@RequestParam String symbol) {
     List<Stock> stockData = stockRepository.findBySymbolOrderByTimestampAsc(symbol);

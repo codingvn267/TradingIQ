@@ -11,10 +11,10 @@ import java.util.List;
 @Repository
 public interface StockRepository extends JpaRepository<Stock, Long> {
 
-    // ✅ Fetch all stored stock data for a given symbol, ordered by timestamp ASC (oldest first)
+    //Fetch all stored stock data for a given symbol, ordered by timestamp ASC (oldest first)
     List<Stock> findBySymbolOrderByTimestampAsc(String symbol);
 
-    // ✅ Fetch the most recent stock data for a symbol
+    //Fetch the most recent stock data for a symbol
     @Query("SELECT s FROM Stock s WHERE s.symbol = :symbol ORDER BY s.timestamp DESC LIMIT 1")
     Stock findLatestStockData(@Param("symbol") String symbol);
 }

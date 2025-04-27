@@ -27,7 +27,7 @@ public class Stock {
     @Column(nullable = false)
     private LocalDateTime timestamp;
 
-    // ✅ Add a constructor without `id`
+    // Add a constructor without `id`
     public Stock(String symbol, double openPrice, double highPrice, double lowPrice, double closePrice, int volume, LocalDateTime timestamp) {
         this.symbol = symbol;
         this.openPrice = openPrice;
