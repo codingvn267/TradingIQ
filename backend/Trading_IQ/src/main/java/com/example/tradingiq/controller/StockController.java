@@ -12,7 +12,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-
+/**
+ * Controller for handling stock-related operations.
+ * Provides endpoints to fetch, analyze, and retrieve stock data.
+ * 
+ * Mapped to /api/stocks endpoint.
+ */
 @RestController
 @RequestMapping("/api/stocks")
 public class StockController {

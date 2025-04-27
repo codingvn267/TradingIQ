@@ -12,6 +12,11 @@ import org.ta4j.core.rules.CrossedUpIndicatorRule;
 
 import java.util.List;
 
+/**
+ * Service for analyzing stock data using a simple moving average (SMA) strategy.
+ * It uses the TA4J library to implement the trading strategy and generate trade signals.
+ */
+
 @Service 
 public class StrategyService {
 

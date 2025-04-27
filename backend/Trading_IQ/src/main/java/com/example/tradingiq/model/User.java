@@ -5,6 +5,12 @@ import lombok.*;
 
 import java.util.Date;
 
+/**
+ * Represents a user in the system.
+ * This class is mapped to the "users" table in the database.
+ * It contains fields for user details such as name, email, phone, date of birth, password, and balance.
+ */
+
 @Entity
 @Table(name = "users")
 @Data

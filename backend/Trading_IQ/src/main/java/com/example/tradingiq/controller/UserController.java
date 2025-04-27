@@ -18,6 +18,12 @@ import com.example.tradingiq.config.CorsConfig;
 import com.example.tradingiq.model.User;
 import com.example.tradingiq.service.UserService;
 
+/**
+ * Controller for handling user-related operations.
+ * Provides endpoints to register, retrieve, and delete users.
+ * 
+ * Mapped to /api/users endpoint.
+ */
 @RestController
 @RequestMapping("/api/users")
 public class UserController {

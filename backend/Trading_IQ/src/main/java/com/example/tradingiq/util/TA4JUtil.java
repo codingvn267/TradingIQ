@@ -7,6 +7,10 @@ import org.ta4j.core.num.DecimalNum;
 import java.time.Duration;
 import java.time.ZoneId;
 import java.util.List;
+/**
+ * Utility class for converting stock data to TA4J BarSeries.
+ * This class provides methods to convert a list of Stock objects into a BarSeries object.
+ */
 
 public class TA4JUtil {
   public static BarSeries convertToBarSeries(List<Stock> stockData, String symbol) {

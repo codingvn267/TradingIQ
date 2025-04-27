@@ -8,6 +8,11 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
+/**
+ * Repository interface for managing stock data in the database.
+ * Extends JpaRepository to provide CRUD operations and custom queries.
+ */
+
 @Repository
 public interface StockRepository extends JpaRepository<Stock, Long> {
 

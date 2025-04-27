@@ -4,6 +4,19 @@ import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
+
+/**
+ * Controller that provides a mock AI response for stock analysis.
+ * 
+ * This controller simulates an AI-based technical analysis 
+ * by returning a pre-defined JSON structure based on the stock symbol provided.
+ * 
+ * Mapped to /api/openai endpoint.
+ * 
+ * Please note that this is a mock implementation and does not perform any actual AI analysis.
+ * In a real-world scenario, this would interface with an AI service to get dynamic responses.
+ */
+
 @RestController
 @RequestMapping("/api/openai")
 public class OpenAIController {

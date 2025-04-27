@@ -7,6 +7,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.example.tradingiq.repository.UserRepository;
 
+/**
+ * Test class for UserService.
+ * This class contains tests to verify the functionality of the UserService.
+ */
+
 @SpringBootTest
 public class UserServiceTest {
   

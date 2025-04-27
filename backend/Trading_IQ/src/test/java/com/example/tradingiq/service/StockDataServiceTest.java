@@ -7,6 +7,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+/**
+ * Test class for StockDataService.
+ * This class contains tests to verify the functionality of the StockDataService.
+ */
+
 @SpringBootTest
 class StockDataServiceTest {
 

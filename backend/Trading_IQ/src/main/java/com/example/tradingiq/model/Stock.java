@@ -5,6 +5,11 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
+/**
+ * Represents stock data for a specific symbol at a given timestamp.
+ * This class is mapped to the "stockData" table in the database.
+ */
+
 @Entity
 @Table(name = "stockData")
 @Getter @Setter

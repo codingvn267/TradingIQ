@@ -16,6 +16,11 @@ import java.util.Map;
 import java.time.Instant;
 import java.time.ZoneId;
 
+/**
+ * Service for fetching and saving historical stock data.
+ * Uses a REST API to retrieve stock data and saves it to the database.
+ */
+
 @Service
 public class StockDataService {
 
